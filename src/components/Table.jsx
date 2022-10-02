@@ -24,9 +24,8 @@ export default function Table({data, error, seterror, setallData, setdata, allDa
         }
     }, [allData])
 
-    
+
     useEffect(() => {
-        setcurrent(0)
         if(search?.length === 0 )
             searchKey?.length === 0 ?
                 setdata(allData?.filter((item, index)=> index >= (current) * 10  && index < (current + 1)*10)) :
@@ -50,11 +49,13 @@ export default function Table({data, error, seterror, setallData, setdata, allDa
     }
 
     const handleDeleteClick = (id) => {
+        setcurrent((prev) => data?.length == 1 ? prev-1 : prev)
         setallData((prev) => prev.filter((item)=> item.id !== id)) 
         search.length > 0 && setsearch((prev) => prev.filter((item)=> item.id !== id)) 
     }
 
     const deleteSlected = () => {
+        setcurrent((prev) => selected?.length === data?.length ? prev-1 : prev)
         for (let j = 0; j < selected?.length; j++) {
             const id = selected[j]
             setallData((prev)=> prev.filter((item)=> item.id !== id))
@@ -62,6 +63,8 @@ export default function Table({data, error, seterror, setallData, setdata, allDa
         }
         setselected([])
     }
+
+    console.log(current);
 
     const handleSearch = (e) => {
         seterror(null)
